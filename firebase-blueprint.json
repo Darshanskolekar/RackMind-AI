@@ -1,0 +1,47 @@
+{
+  "entities": {
+    "CopilotSession": {
+      "title": "CopilotSession",
+      "description": "Historical triage and Copilot chat conversation thread",
+      "type": "object",
+      "properties": {
+        "session_id": { "type": "string", "description": "Unique session identifier" },
+        "user_persona": { "type": "string", "description": "Role/persona of the user (e.g. Lead SRE, Field Tech, ML Workload Engineer)" },
+        "title": { "type": "string", "description": "Auto-generated brief title of the chat thread" },
+        "updated_at": { "type": "string", "description": "ISO timestamp of last activity for sorting" },
+        "messages": { "type": "array", "description": "Array of conversation message objects" }
+      },
+      "required": ["session_id", "user_persona", "title", "updated_at", "messages"]
+    },
+    "IncidentTicket": {
+      "title": "IncidentTicket",
+      "description": "Autonomous or Copilot generated datacenter incident ticket requiring human approval",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Firestore document ID or ticket ID" },
+        "incident_id": { "type": "string", "description": "Human-readable incident code" },
+        "rack_id": { "type": "string", "description": "Target rack identifier" },
+        "server_id": { "type": "string", "description": "Target server or chassis identifier" },
+        "severity": { "type": "string", "description": "Severity tier, e.g. P1, P2" },
+        "status": { "type": "string", "description": "AWAITING_APPROVAL, APPROVED_AND_EXECUTED, REJECTED" },
+        "created_at": { "type": "string", "description": "Creation ISO timestamp" },
+        "root_cause_analysis": { "type": "string", "description": "Diagnostic root cause breakdown" },
+        "citation": { "type": "string", "description": "Vendor manual citation" },
+        "recommended_action": { "type": "object", "description": "Remediation action configuration" },
+        "execution_logs": { "type": "array", "description": "Audit trail log messages" },
+        "metrics_snapshot": { "type": "object", "description": "Telemetry metrics snapshot when incident was generated" }
+      },
+      "required": ["incident_id", "rack_id", "server_id", "severity", "status", "created_at"]
+    }
+  },
+  "firestore": {
+    "/copilot_sessions/{sessionId}": {
+      "schema": "CopilotSession",
+      "description": "Collection of saved Copilot triage sessions filtered by user persona"
+    },
+    "/incidents/{incidentId}": {
+      "schema": "IncidentTicket",
+      "description": "Collection of datacenter incident tickets monitored by global alert system"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "RackMind AI (TwinOps AI) - Autonomous Datacenter Digital Twin",
+  "description": "Autonomous data center digital twin monitoring 2D rack elevations and thermal heatmaps, with Gemini Function Calling autonomous incident triage and remediation queue.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,57 @@
+# ==============================================================================
+# Google Cloud Build Pipeline for RackMind AI (TwinOps)
+# Deployment Target: Google Cloud Run (Fully Managed Container Platform)
+# Google Cloud AI Builder Cup 2026 Submission
+# ==============================================================================
+
+steps:
+  # 1. Build container image using Dockerfile
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/rackmind-ai:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/rackmind-ai:latest'
+      - '.'
+
+  # 2. Push container image to Google Container Registry / Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/rackmind-ai:$COMMIT_SHA'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/rackmind-ai:latest'
+
+  # 3. Deploy container image to Google Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'rackmind-ai'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/rackmind-ai:$COMMIT_SHA'
+      - '--region'
+      - 'asia-southeast1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--port'
+      - '8080'
+      - '--memory'
+      - '2Gi'
+      - '--cpu'
+      - '2'
+      - '--set-env-vars'
+      - 'NODE_ENV=production'
+
+images:
+  - 'gcr.io/$PROJECT_ID/rackmind-ai:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/rackmind-ai:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
