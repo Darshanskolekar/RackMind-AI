@@ -54,7 +54,6 @@ Powered by **Google Gemini** with real-time **Google Search Grounding**, RackMin
 ## 2. 60-Second Judge Evaluation Walkthrough / Quick Start
 *(Evaluation Rubric: Execution & UI/UX Quality)*
 
-For competition judges seeking to verify core capabilities within 60 seconds, follow this recommended walkthrough:
 
 ```
 [ Step 1: Select Rack Elevation ] ──▶ [ Step 2: Inspect Action Hub ] ──▶ [ Step 3: HITL Mitigation ] ──▶ [ Step 4: TwinOps Copilot ]
